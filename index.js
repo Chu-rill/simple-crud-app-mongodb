@@ -36,6 +36,7 @@ app.post("/api/product", async (req, res) => {
   }
 });
 
+//update product
 app.put("/api/getAllProduct/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -47,6 +48,22 @@ app.put("/api/getAllProduct/:id", async (req, res) => {
 
     const updatedProduct = await Product.findById(id);
     res.status(200).json(updatedProduct);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//delete product
+app.delete("/api/getAllProduct/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findByIdAndDelete(id);
+
+    if (!product) {
+      res.status(404).json({ message: "Product could not be deleted" });
+    }
+
+    res.status(200).json({ message: "product deleted" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
