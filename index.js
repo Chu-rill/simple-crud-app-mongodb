@@ -36,6 +36,22 @@ app.post("/api/product", async (req, res) => {
   }
 });
 
+app.put("/api/getAllProduct/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findByIdAndUpdate(id, req.body);
+
+    if (!product) {
+      res.status(404).json({ message: "Product not found" });
+    }
+
+    const updatedProduct = await Product.findById(id);
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 mongoose
   .connect(
     "mongodb+srv://churchillrimamskep:Rbq0R29l9s2IRH6d@backenddb.topi33r.mongodb.net/?retryWrites=true&w=majority&appName=BackendDB"
